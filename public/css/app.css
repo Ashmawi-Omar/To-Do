@@ -1,0 +1,305 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+[x-cloak] { display: none !important; }
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: #f4f5f7;
+    color: #1f2933;
+}
+
+.app {
+    max-width: 920px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+}
+
+h1 {
+    margin: 0 0 1.25rem;
+    font-size: 2rem;
+    text-align: center;
+    color: #3b5bdb;
+}
+
+input[type="text"],
+input[type="date"] {
+    flex: 1;
+    min-width: 0;
+    padding: .7rem .9rem;
+    font: inherit;
+    border: 1px solid #cbd2d9;
+    border-radius: 8px;
+    background: #fff;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus {
+    outline: 2px solid #3b5bdb;
+    outline-offset: 1px;
+}
+
+button {
+    font: inherit;
+    cursor: pointer;
+}
+
+.add-form, .edit-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+.add-form input[type="text"] { flex: 1 1 12rem; }
+
+.add-form button, .edit-form button {
+    padding: .7rem 1.1rem;
+    border: 0;
+    border-radius: 8px;
+    background: #3b5bdb;
+    color: #fff;
+    font-weight: 600;
+}
+
+.add-form button:hover, .edit-form button:hover { background: #2f49b5; }
+
+.error {
+    margin: .75rem 0 0;
+    padding: .6rem .9rem;
+    border-radius: 8px;
+    background: #ffe3e3;
+    color: #c92a2a;
+}
+
+.filters {
+    display: flex;
+    gap: .5rem;
+    margin: 1.25rem 0 .75rem;
+}
+
+.filters a {
+    padding: .35rem .8rem;
+    border-radius: 999px;
+    color: #52606d;
+    text-decoration: none;
+    font-size: .9rem;
+}
+
+.filters a:hover { background: #e4e7eb; }
+.filters a.active { background: #3b5bdb; color: #fff; }
+
+.count { opacity: .75; font-size: .8rem; }
+
+.todos {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+}
+
+.todo, .empty {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .8rem 1rem;
+    border-bottom: 1px solid #e4e7eb;
+}
+
+.todo:last-child, .empty:last-child { border-bottom: 0; }
+
+.empty { justify-content: center; color: #7b8794; padding: 1.5rem 1rem; }
+
+.check {
+    width: 1.6rem;
+    height: 1.6rem;
+    padding: 0;
+    border: 2px solid #9aa5b1;
+    border-radius: 50%;
+    background: #fff;
+    color: #fff;
+    line-height: 1;
+}
+
+.check:hover { border-color: #3b5bdb; }
+.done .check { background: #2f9e44; border-color: #2f9e44; }
+
+.body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.title { overflow-wrap: anywhere; cursor: text; }
+
+.meta { font-size: .75rem; color: #7b8794; }
+.due { color: #3b5bdb; font-weight: 600; }
+
+.done .title { text-decoration: line-through; color: #9aa5b1; }
+
+.edit-form { flex: 1; flex-wrap: wrap; }
+.edit-form input[type="text"] { flex: 1 1 10rem; }
+.edit-form input[type="date"] { flex: 0 0 auto; }
+
+.link {
+    border: 0;
+    background: none;
+    color: #3b5bdb;
+    font-size: .85rem;
+}
+
+.link:hover { text-decoration: underline; }
+
+.delete {
+    border: 0;
+    background: none;
+    color: #9aa5b1;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.delete:hover { color: #e03131; }
+
+.add-form input[type="date"] { flex: 0 0 auto; }
+
+.layout > * { min-width: 0; }
+
+.layout {
+    display: grid;
+    grid-template-columns: 290px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+@media (max-width: 760px) {
+    .layout { grid-template-columns: 1fr; }
+}
+
+.day-panel h2 {
+    margin: 0 0 .75rem;
+    font-size: 1.25rem;
+}
+
+.badge {
+    margin-left: .4rem;
+    padding: .1rem .5rem;
+    border-radius: 999px;
+    background: #dbe4ff;
+    color: #3b5bdb;
+    font-size: .75rem;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+.notice {
+    margin: 0 0 .75rem;
+    padding: .6rem .9rem;
+    border-radius: 8px;
+    background: #e7f5ff;
+    color: #1864ab;
+}
+
+.notice a { color: inherit; font-weight: 600; }
+
+.calendar {
+    padding: .9rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+}
+
+.calendar header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: .6rem;
+}
+
+.calendar header a {
+    width: 2rem;
+    height: 2rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    color: #52606d;
+    font-size: 1.4rem;
+    line-height: 1;
+    text-decoration: none;
+}
+
+.calendar header a:hover { background: #e4e7eb; }
+
+.cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    text-align: center;
+}
+
+.weekdays span {
+    padding: .25rem 0;
+    font-size: .7rem;
+    color: #7b8794;
+    text-transform: uppercase;
+}
+
+.cal-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-height: 2.6rem;
+    border-radius: 8px;
+    color: #1f2933;
+    font-size: .85rem;
+    text-decoration: none;
+}
+
+a.cal-day:hover { background: #e4e7eb; }
+.cal-day.outside { color: #b8c2cc; }
+.cal-day.today .num { font-weight: 700; color: #3b5bdb; }
+.cal-day.selected { background: #3b5bdb; color: #fff; }
+.cal-day.selected .num { color: #fff; }
+.cal-day.selected:hover { background: #2f49b5; }
+
+.dots { display: flex; gap: 3px; height: 6px; }
+
+.dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.dot.open { background: #4c6ef5; }
+.dot.done { background: #2f9e44; }
+.cal-day.selected .dot.open { background: #fff; }
+.cal-day.selected .dot.done { background: #8ce99a; }
+
+.calendar footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+    margin-top: .6rem;
+    font-size: .85rem;
+}
+
+.calendar footer a {
+    padding: .25rem .7rem;
+    border-radius: 999px;
+    color: #3b5bdb;
+    text-decoration: none;
+}
+
+.calendar footer a:hover { background: #e4e7eb; }
+.calendar footer a.active { background: #3b5bdb; color: #fff; }
+
+.legend {
+    margin-left: auto;
+    font-size: .75rem;
+    color: #7b8794;
+}
