@@ -33,6 +33,9 @@
   }
 
   function generateId() {
+    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+      return crypto.randomUUID();
+    }
     return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
   }
 
@@ -168,7 +171,12 @@
     editInput.focus();
     editInput.select();
 
+    let cancelled = false;
+
     function finishEditing() {
+      if (cancelled) {
+        return;
+      }
       editTodo(todo.id, editInput.value);
     }
 
@@ -177,6 +185,7 @@
       if (e.key === 'Enter') {
         editInput.blur();
       } else if (e.key === 'Escape') {
+        cancelled = true;
         render();
       }
     });
