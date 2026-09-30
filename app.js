@@ -25,7 +25,11 @@
   }
 
   function saveTodos() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+    } catch (e) {
+      console.warn('Failed to save todos to localStorage:', e);
+    }
   }
 
   function generateId() {
