@@ -17,7 +17,8 @@
   function loadTodos() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : [];
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
     } catch (e) {
       console.warn('Failed to load todos from localStorage:', e);
       return [];
