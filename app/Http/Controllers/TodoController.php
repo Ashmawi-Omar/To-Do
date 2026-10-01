@@ -76,11 +76,13 @@ class TodoController extends Controller
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'due_date' => ['nullable', 'date_format:Y-m-d'],
+            'description' => ['nullable', 'string'],
         ]);
 
         $todo = Todo::create([
             'title' => $data['title'],
             'due_date' => $data['due_date'] ?? $this->today($request)->toDateString(),
+            'description' => $data['description'] ?? null,
         ]);
 
         return $this->redirectBack($request, $todo, 'Added to');
@@ -91,6 +93,7 @@ class TodoController extends Controller
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'due_date' => ['sometimes', 'required', 'date_format:Y-m-d'],
+            'description' => ['nullable', 'string'],
         ]);
 
         $todo->update($data);

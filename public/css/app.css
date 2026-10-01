@@ -52,6 +52,23 @@ button {
 
 .add-form input[type="text"] { flex: 1 1 12rem; }
 
+.add-form textarea, .edit-form textarea {
+    order: 4;
+    flex: 1 1 100%;
+    min-height: 80px;
+    padding: .7rem .9rem;
+    font: inherit;
+    border: 1px solid #cbd2d9;
+    border-radius: 8px;
+    background: #fff;
+    resize: vertical; /* Lets you drag to make it taller */
+}
+
+.add-form textarea:focus, .edit-form textarea:focus {
+    outline: 2px solid #3b5bdb;
+    outline-offset: 1px;
+}
+
 .add-form button, .edit-form button {
     padding: .7rem 1.1rem;
     border: 0;
@@ -133,6 +150,12 @@ button {
 }
 
 .title { overflow-wrap: anywhere; cursor: text; }
+
+.description {
+    font-size: .85rem;
+    color: #7b8794; /* Matches your existing meta grey color */
+    margin: .25rem 0;
+}
 
 .meta { font-size: .75rem; color: #7b8794; }
 .due { color: #3b5bdb; font-weight: 600; }
@@ -302,4 +325,36 @@ a.cal-day:hover { background: #e4e7eb; }
     margin-left: auto;
     font-size: .75rem;
     color: #7b8794;
+}
+
+.add-form input[name="title"], .edit-form input[name="title"] { order: 1; }
+.add-form input[name="due_date"], .edit-form input[name="due_date"] { order: 2; }
+.add-form button, .edit-form button { order: 3; }
+
+/* Keep the top row items in order */
+.edit-form input[name="title"] { order: 1; }
+.edit-form input[name="due_date"] { order: 2; }
+
+/* Keep description on the second row */
+.edit-form textarea[name="description"] {
+    order: 4;
+    flex: 1 1 100%;
+}
+
+/* Force the Undo button to the bottom row */
+.edit-form .save-btn { 
+    order: 4; 
+    flex: 1 1 100%;
+    margin-top: 0.25rem;
+}
+.edit-form .cancel-btn {
+    order: 3;
+    background: #f1f3f5;
+    color: #495057;
+    border: 1px solid #ced4da;
+    margin-top: 0.25rem;
+}
+
+.edit-form .cancel-btn:hover { 
+    background: #e2e6ea; 
 }

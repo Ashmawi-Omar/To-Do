@@ -12,7 +12,11 @@ class Todo extends Model
     /** @use HasFactory<TodoFactory> */
     use HasFactory;
 
-    protected $fillable = ['title', 'completed', 'due_date'];
+    protected $fillable = [
+        'title',
+        'description', 
+        'completed', 
+        'due_date'];
 
     protected function casts(): array
     {

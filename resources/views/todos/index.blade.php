@@ -25,6 +25,7 @@
                 @csrf
                 <input type="text" name="title" placeholder="What needs to be done?" maxlength="255"
                        autocomplete="off" autofocus required aria-label="New to-do">
+                <textarea name="description" placeholder="Notes (optional)" aria-label="Description"></textarea>
                 <input type="date" name="due_date" value="{{ ($selected ?? $today)->toDateString() }}" aria-label="Date">
                 <button type="submit">Add</button>
             </form>
@@ -60,6 +61,9 @@
 
                         <div class="body" x-show="!editing">
                             <span class="title" x-on:dblclick="editing = true; $nextTick(() => $refs.input.select())">{{ $todo->title }}</span>
+                            @if ($todo->description)
+                                <span class="description">{{ $todo->description }}</span>
+                            @endif
                             <span class="meta">
                                 @if ($selected === null)
                                     <span class="due">{{ $todo->due_date->format('D, j M Y') }}</span> &middot;
@@ -79,9 +83,14 @@
                             <input type="text" name="title" value="{{ $todo->title }}" maxlength="255" required
                                    x-ref="input" x-on:keydown.escape="editing = false; $refs.input.value = @js($todo->title)"
                                    aria-label="Edit to-do">
+                            <textarea name="description" placeholder="Notes (optional)" aria-label="Description">{{ $todo->description }}</textarea>
                             <input type="date" name="due_date" value="{{ $todo->due_date->toDateString() }}" required
                                    aria-label="Date">
-                            <button type="submit">Save</button>
+                            <button type="submit" class="save-btn">Save</button>
+                            <button type="button" class="cancel-btn" 
+                                x-on:click="editing = false; $refs.input.value = @js($todo->title); $refs.desc.value = @js($todo->description ?? ''); $refs.date.value = @js($todo->due_date->toDateString())">
+                                Undo
+                            </button>
                         </form>
 
                         <button type="button" class="link" x-show="!editing"
