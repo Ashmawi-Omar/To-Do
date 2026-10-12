@@ -24,7 +24,7 @@ fi
 
 chown -R www-data:www-data storage bootstrap/cache
 
-grep -qE '^APP_KEY=.+' .env || su-exec www-data php artisan key:generate --force
+grep -qE '^APP_KEY=.+' .env || php artisan key:generate --force
 su-exec www-data php artisan migrate --force
 
 exec "$@"

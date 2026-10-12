@@ -20,9 +20,145 @@ A classic to-do app built with **Laravel 13**, **SQLite**, **Blade + Alpine.js**
 docker compose up -d --build
 ```
 
-Open <http://localhost:8080> (set `APP_PORT` to use another port).
+Open <http://localhost:7080> (set `APP_PORT` to use another port).
 
 The first start installs Composer dependencies, creates `.env`, generates the app key and runs migrations, so give it a minute. Later starts are fast (dependencies are reinstalled automatically when `composer.lock` changes).
+
+### Export the current database to the repository
+
+To save the most up-to-date database from the running Docker container to `database.sqlite`:
+
+```powershell
+docker compose exec app cp /data/database.sqlite /var/www/html/database.sqlite
+```
+
+This command:
+
+- Accesses the running `app` container.
+- Copies the Docker-managed database from `/data/database.sqlite` to the repository directory (mounted at `/var/www/html`).
+
+Then verify the export:
+
+```powershell
+ls -la database.sqlite
+```
+
+The file should exist and show a recent modification time. You can now commit this to version control:
+
+```powershell
+git add database.sqlite
+git commit -m "Update database snapshot"
+```
+
+### Start with existing database
+
+For a clean rebuild using the repository's `database.sqlite`, use this sequence from the project directory.
+
+#### 1. Stop the current Compose project
+
+```powershell
+docker compose down
+```
+
+#### 2. Delete the existing Docker volumes
+
+This removes the Docker-managed SQLite database, but does not delete `.\database.sqlite` in the repository.
+
+```powershell
+docker compose down --volumes --remove-orphans
+```
+
+This also removes the Docker-managed `vendor`, `storage`, and `sqlite-data` volumes.
+
+#### 3. Rebuild the application image
+
+```powershell
+docker compose build --no-cache
+```
+
+The `--no-cache` option forces Docker to rebuild every image layer.
+
+#### 4. Copy the repository database into the new Docker volume
+
+Run this before starting the full application:
+
+```powershell
+docker compose run --rm --no-deps --entrypoint sh app -lc "cp /var/www/html/database.sqlite /data/database.sqlite && chown www-data:www-data /data/database.sqlite"
+```
+
+This command:
+
+- Starts a temporary `app` container.
+- Mounts the repository into `/var/www/html`.
+- Creates the new `sqlite-data` volume at `/data`.
+- Copies the repository database into `/data/database.sqlite`.
+- Assigns the database to the PHP application user.
+- Removes the temporary container afterward.
+
+#### 5. Start the application
+
+```powershell
+docker compose up --pull always -d
+```
+
+The startup script will then:
+
+- Install Composer dependencies.
+- Create required Laravel directories.
+- Generate `APP_KEY` if necessary.
+- Run pending migrations.
+- Start PHP-FPM and Nginx.
+
+Because the imported database already contains the migration records, existing migrations should not recreate its tables.
+
+#### 6. Verify the containers
+
+```powershell
+docker compose ps
+```
+
+Expected state:
+
+```text
+to-do-app-1   Up ... (healthy)
+to-do-web-1   Up ...
+```
+
+The web container should show:
+
+```text
+0.0.0.0:7080->80/tcp
+```
+
+#### 7. Verify the database
+
+Check migration status:
+
+```powershell
+docker compose exec app php artisan migrate:status
+```
+
+Check the imported todo records:
+
+```powershell
+docker compose exec app php artisan tinker --execute="echo DB::table('todos')->count();"
+```
+
+Open the application at <http://localhost:7080>
+
+#### Complete reset command sequence
+
+For future clean rebuilds, this is the full sequence:
+
+```powershell
+docker compose down --volumes --remove-orphans
+docker compose build --no-cache
+docker compose run --rm --no-deps --entrypoint sh app -lc "cp /var/www/html/database.sqlite /data/database.sqlite && chown www-data:www-data /data/database.sqlite"
+docker compose up --pull always -d
+docker compose ps
+```
+
+**Note:** Do not run `docker compose down --volumes` if you want to preserve the database currently stored in Docker. The repository database remains unchanged because it is only copied into the Docker volume.
 
 | Command | What it does |
 |---|---|
